@@ -21,7 +21,9 @@
   <h2>What Satark stores</h2>
   <p>On your computer only: your settings and a log of the last 50 Privacy Receipts. Receipts hold metadata (time, route, model, how many characters were sent, how many items were hidden). They never hold the page text or the AI reply. Site names are stored only if you turn that on. You can export or clear the log at any time.</p>
   <h2>Firebase services</h2>
-  <p>Satark uses Firebase Authentication (anonymous, no name or email), App Check (to protect the cloud route from abuse) and Remote Config (to receive settings such as phrase lists and a cloud on/off switch). These make small requests that carry no page content, and the first two run only before your first cloud check.</p>
+  <p>Satark uses Firebase Authentication (anonymous, no name or email), App Check (to protect the cloud route from abuse) and Remote Config (to receive settings such as phrase lists and a cloud on/off switch). These make small requests that carry no page content, and the first two run only before your first cloud check. To prove a request comes from the real extension, Satark exchanges its anonymous sign-in for a short-lived App Check token at our own Cloud Function; that request carries only the sign-in token, and the function keeps a per-account counter for rate limiting.</p>
+  <h2>Translations</h2>
+  <p>When you choose a language other than English, on-device verdicts are translated on your computer by Chrome's built-in translator. Nothing is sent for translation.</p>
   <h2>What Satark never does</h2>
   <ul>
     <li>It does not sell or share your data, and does not use it for advertising or anything unrelated to the check you asked for.</li>

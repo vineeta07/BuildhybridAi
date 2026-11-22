@@ -1,7 +1,7 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@/assets/tailwind.css';
-import type { UserMode } from '@satark/core';
+import { OUTPUT_LANGUAGES, type UserMode } from '@satark/core';
 import { useOnDeviceStatus, useSettings } from '@/hooks/useStores';
 import { ModelSetup } from '@/components/ModelSetup';
 import { StatusDot } from '@/components/StatusLine';
@@ -18,7 +18,7 @@ const MODES: { id: UserMode; label: string; desc: string }[] = [
   { id: 'quality', label: 'Best quality', desc: 'Cloud first (redacted), on-device if you are offline.' },
   { id: 'cloud', label: 'Cloud only', desc: 'For laptops without on-device AI. Personal details are always hidden first.' },
 ];
-const LANGS = ['English', 'Hindi', 'Bengali', 'Tamil', 'Telugu', 'Marathi', 'Spanish', 'French', 'German', 'Japanese'];
+const LANGS = Object.keys(OUTPUT_LANGUAGES);
 
 function Options() {
   const [settings, update] = useSettings();
@@ -75,7 +75,7 @@ function Options() {
 
       <section className="card space-y-2" aria-labelledby="lang-h">
         <h2 id="lang-h" className="font-display font-semibold text-xl">Explanation language</h2>
-        <label className="block text-sm text-slate-600" htmlFor="lang">Cloud checks explain in this language. On-device checks stay in English for now.</label>
+        <label className="block text-sm text-slate-600" htmlFor="lang">Cloud checks answer in this language. On-device checks are translated on your device with Chrome's built-in translator when it supports the language. Quotes always stay as written on the page.</label>
         <select id="lang" className="rounded-lg border border-slate-300 bg-white p-2" value={settings.outputLanguage} onChange={(e) => void update({ outputLanguage: e.target.value })}>
           {LANGS.map((l) => <option key={l}>{l}</option>)}
         </select>

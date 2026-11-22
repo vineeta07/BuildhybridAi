@@ -17,6 +17,9 @@ export function ModelSetup(props: { status: OnDeviceStatus | 'checking'; onDone:
   if (props.status === 'available') {
     return <p className="text-sm text-safe">On-device AI is ready. Checks can run without sending anything.</p>;
   }
+  if (props.status === 'unavailable' && import.meta.env.FIREFOX) {
+    return <p className="text-sm text-slate-700">Firefox does not offer on-device AI yet, so Satark checks in the cloud. It hides personal details first and asks before sending anything.</p>;
+  }
   if (props.status === 'unavailable') {
     return (
       <div className="space-y-1 text-sm text-slate-700">

@@ -3,6 +3,16 @@ import { DEFAULT_REMOTE, tier0, type Msg, type PageSnapshot, type RemoteSettings
 
 const EXTRACT_FILE = '/extract.js';
 
+/**
+ * Opens Satark beside the page. Chrome: side panel. Firefox: sidebar. Must be called
+ * synchronously inside the user-gesture handler, so nothing is awaited before it.
+ */
+function openPanel(tabId: number) {
+  if (chrome.sidePanel?.open) { void chrome.sidePanel.open({ tabId }); return; }
+  const ff = (globalThis as { browser?: { sidebarAction?: { open(): Promise<void> } } }).browser;
+  void ff?.sidebarAction?.open().catch(() => undefined);
+}
+
 export default defineBackground(() => {
   chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
@@ -10,23 +20,23 @@ export default defineBackground(() => {
     });
   });
 
-  // Every handler opens the panel FIRST and without awaiting: sidePanel.open needs the gesture.
+  // Every handler opens the panel FIRST and without awaiting: opening needs the gesture.
   // The request is handed over through storage.session so the panel cannot miss it.
   chrome.action.onClicked.addListener((tab) => {
     if (tab.id == null) return;
-    void chrome.sidePanel.open({ tabId: tab.id });
+    openPanel(tab.id);
     void chrome.storage.session.set({ pending: { t: 'CHECK_REQUESTED' } satisfies Msg, pendingAt: Date.now() });
   });
 
   chrome.commands.onCommand.addListener((command, tab) => {
     if (command !== 'check-page' || tab?.id == null) return;
-    void chrome.sidePanel.open({ tabId: tab.id });
+    openPanel(tab.id);
     void chrome.storage.session.set({ pending: { t: 'CHECK_REQUESTED' } satisfies Msg, pendingAt: Date.now() });
   });
 
   chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId !== 'check-selection' || tab?.id == null) return;
-    void chrome.sidePanel.open({ tabId: tab.id });
+    openPanel(tab.id);
     void chrome.storage.session.set({
       pending: { t: 'SELECTION', text: (info.selectionText ?? '').slice(0, 40_000), url: tab.url ?? '' } satisfies Msg,
       pendingAt: Date.now(),

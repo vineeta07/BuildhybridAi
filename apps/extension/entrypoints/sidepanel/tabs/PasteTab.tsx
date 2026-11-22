@@ -6,6 +6,7 @@ import type { useCheck } from '@/hooks/useCheck';
 
 export function PasteTab(props: {
   check: ReturnType<typeof useCheck>;
+  outputLanguage: string;
   incoming: { text: string; url: string; token: number; origin: 'paste' | 'selection' } | null;
   onFix: (fix: 'download' | 'cloud', snap: PageSnapshot, lens: Lens) => void;
 }) {
@@ -49,7 +50,7 @@ export function PasteTab(props: {
           </div>
         )}
         {st.s === 'error' && <p className="card text-danger" role="alert">Something went wrong: {st.message}</p>}
-        {st.s === 'result' && <ResultView result={st.result} onFix={last ? (fix) => props.onFix(fix, last, lens) : undefined} />}
+        {st.s === 'result' && <ResultView result={st.result} outputLanguage={props.outputLanguage} onFix={last ? (fix) => props.onFix(fix, last, lens) : undefined} />}
       </div>
     </div>
   );

@@ -121,10 +121,10 @@ export default function App() {
 
       <main className="flex-1 p-4">
         <div role="tabpanel" id="panel-check" aria-labelledby="tab-check" hidden={tab !== 'check'}>
-          <CheckTab check={pageCheck} remote={remote} requestToken={checkToken} onFix={onFix} />
+          <CheckTab check={pageCheck} remote={remote} requestToken={checkToken} onFix={onFix} outputLanguage={settings.outputLanguage} />
         </div>
         <div role="tabpanel" id="panel-paste" aria-labelledby="tab-paste" hidden={tab !== 'paste'}>
-          <PasteTab check={pasteCheck} incoming={incoming} onFix={onFix} />
+          <PasteTab check={pasteCheck} incoming={incoming} onFix={onFix} outputLanguage={settings.outputLanguage} />
         </div>
         <div role="tabpanel" id="panel-dashboard" aria-labelledby="tab-dashboard" hidden={tab !== 'dashboard'}>
           {tab === 'dashboard' && <DashboardTab />}

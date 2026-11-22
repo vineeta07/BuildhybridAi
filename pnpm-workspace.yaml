@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - apps/*
+  - functions
 onlyBuiltDependencies:
   - esbuild
   - spawn-sync

@@ -22,10 +22,13 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm zip
+      - run: pnpm zip:firefox
+      - run: npx --yes web-ext@8 lint --source-dir apps/extension/.output/firefox-mv3 --self-hosted
       - run: pnpm build:site
+      - run: pnpm --filter @satark/functions build
       - uses: actions/upload-artifact@v4
         with:
-          name: satark-chrome-zip
+          name: satark-zips
           path: apps/extension/.output/*.zip
   secrets:
     runs-on: ubuntu-latest

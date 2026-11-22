@@ -9,7 +9,7 @@ import type { useCheck } from '@/hooks/useCheck';
 type Check = ReturnType<typeof useCheck>;
 
 export function CheckTab(props: {
-  check: Check; remote: RemoteSettings; requestToken: number;
+  check: Check; remote: RemoteSettings; requestToken: number; outputLanguage: string;
   onFix: (fix: 'download' | 'cloud', snap: PageSnapshot, lens: Lens) => void;
 }) {
   const { check, remote } = props;
@@ -100,6 +100,7 @@ export function CheckTab(props: {
         {st.s === 'result' && (
           <ResultView
             result={st.result}
+            outputLanguage={props.outputLanguage}
             onShow={(q, all) => void highlight([q, ...all.filter((x) => x !== q)])}
             onFix={snap ? (fix) => props.onFix(fix, snap, lens) : undefined}
           />

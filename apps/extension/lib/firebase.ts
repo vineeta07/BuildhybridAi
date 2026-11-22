@@ -14,6 +14,10 @@ const config = {
   messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID as string | undefined,
 };
 
+/** HTTPS URL of the appCheckExchange Cloud Function (functions/src/index.ts). Public, not a secret. */
+const EXCHANGE_URL = (env.VITE_APPCHECK_EXCHANGE_URL as string | undefined)?.trim() ?? '';
+export const productionAppCheck = Boolean(EXCHANGE_URL);
+
 /** False when the build has no Firebase web config: on-device still works, cloud is off. */
 export const firebaseConfigured = Boolean(config.apiKey && config.projectId && config.appId);
 
@@ -35,9 +39,9 @@ export async function initFirebase(): Promise<{ app: FirebaseApp; ai: AI }> {
       : { apiKey: 'not-configured', projectId: 'not-configured', appId: '1:0:web:0' },
   );
 
-  // reCAPTCHA cannot run inside an extension, so use a CustomProvider. With a debug token set,
-  // the SDK exchanges the registered token and never calls getToken. The token is pasted into
-  // Options and kept in chrome.storage.local, never committed.
+  // reCAPTCHA cannot run inside an extension, so use a CustomProvider backed by our Cloud
+  // Function. With a debug token set (development), the SDK uses it instead and never calls
+  // getToken. The debug token is pasted into Options and kept in chrome.storage.local.
   const debugToken = await getDebugToken();
   if (debugToken) {
     // 'true' makes the SDK log a NEW token to the console, to register in the Firebase console.
@@ -46,9 +50,7 @@ export async function initFirebase(): Promise<{ app: FirebaseApp; ai: AI }> {
   }
   appCheck = initializeAppCheck(app, {
     provider: new CustomProvider({
-      getToken: async () => {
-        throw new Error('No App Check debug token set. Add one in Options > Developer.');
-      },
+      getToken: () => exchangeAppCheckToken(),
     }),
     // Off until ensureCloud(): no token traffic for on-device-only use.
     isTokenAutoRefreshEnabled: false,
@@ -56,6 +58,27 @@ export async function initFirebase(): Promise<{ app: FirebaseApp; ai: AI }> {
 
   ai = getAI(app, { backend: new GoogleAIBackend() });
   return { app, ai };
+}
+
+/**
+ * Production attestation: sign in anonymously, send the Firebase ID token to the exchange
+ * function, and get a short-lived App Check token back. The request carries no page content.
+ */
+async function exchangeAppCheckToken(): Promise<{ token: string; expireTimeMillis: number }> {
+  if (!EXCHANGE_URL) throw new Error('No App Check setup in this build. Add a debug token in Options > Developer.');
+  const { app: a } = await initFirebase();
+  const { getAuth, signInAnonymously } = await import('firebase/auth/web-extension');
+  const auth = getAuth(a);
+  const user = auth.currentUser ?? (await signInAnonymously(auth)).user;
+  const res = await fetch(EXCHANGE_URL, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${await user.getIdToken()}` },
+  });
+  if (res.status === 429) throw new Error('Too many cloud checks for now. Try again later.');
+  if (!res.ok) throw new Error(`App Check exchange failed (${res.status}).`);
+  const body = (await res.json()) as { token?: string; ttlMillis?: number };
+  if (!body.token || !body.ttlMillis) throw new Error('App Check exchange returned no token.');
+  return { token: body.token, expireTimeMillis: Date.now() + body.ttlMillis };
 }
 
 /** Cloud step: anonymous sign-in and App Check refresh. Called only before the first cloud route. */

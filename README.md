@@ -35,7 +35,7 @@ Firebase: AI Logic | App Check | Auth (anonymous) | Remote Config | Hosting
 - `apps/extension` — WXT + React + Tailwind. Wires core to Chrome and Firebase.
 - `apps/site` — Firebase Hosting: landing page, privacy policy, fictional demo pages, and a no-install **playground** (quick check and redaction preview, runs in the tab, sends nothing).
 
-Also included: a developer **evaluation page** (Options > Developer) that runs `eval/samples.json` through both routes, **opt-in Firestore sync** of settings and counters (never page text), **Guardian mode**, and a dark-pattern check for pre-ticked paid add-ons.
+Also included: **production App Check** through a Cloud Function (`functions/`), **translated verdicts** (Hindi and other languages, on-device with Chrome's Translator API; quotes stay verbatim), a **Firefox build**, a developer **evaluation page** (Options > Developer) that runs `eval/samples.json` through both routes, **opt-in Firestore sync** of settings and counters (never page text), **Guardian mode**, and a dark-pattern check for pre-ticked paid add-ons.
 
 ## Design
 
@@ -81,6 +81,8 @@ pnpm build
 
 Then open `chrome://extensions`, turn on Developer mode, choose **Load unpacked**, and select `apps/extension/.output/chrome-mv3`. Pin the icon, open Options, and paste your App Check debug token under Developer. `pnpm zip` produces the same build as a ZIP for a GitHub release.
 
+**Firefox:** `pnpm zip:firefox`, then open `about:debugging#/runtime/this-firefox` and choose *Load Temporary Add-on* on the `manifest.json` in `apps/extension/.output/firefox-mv3`. Satark opens as a sidebar. Firefox has no on-device AI, so checks use the cloud route (always redacted, always with consent). Needs Firefox 140+. For Mozilla review, upload `satark-0.1.0-sources.zip` as the source code; it builds with `pnpm install && pnpm zip:firefox` on Node 22 and pnpm 10.
+
 Without a Firebase config the build still works for on-device checks and the instant Tier-0 checks; cloud checks are off.
 
 On-device AI needs desktop Chrome with 22 GB of free disk and a GPU with more than 4 GB of VRAM, or 16 GB of RAM with 4+ cores. Check `chrome://on-device-internals` for model status.
@@ -92,7 +94,8 @@ On-device AI needs desktop Chrome with 22 GB of free disk and a GPU with more th
 3. App Check: register the web app (Custom provider) and enforce it for AI Logic. In Options, type `true` as the debug token, reopen the side panel, copy the token the SDK logs in the panel's DevTools console, register it under *Manage debug tokens*, then paste the real token in Options.
 4. Authentication: enable the Anonymous provider.
 5. Remote Config: `firebase deploy --only remoteconfig` (template in `remoteconfig.template.json`).
-6. Hosting: `firebase deploy --only hosting` (builds the playground, then serves `apps/site/public`).
+6. Production App Check (Blaze plan): set the params when prompted and run `firebase deploy --only functions`. `SATARK_WEB_APP_ID` is your Web App ID; `SATARK_ALLOWED_ORIGINS` is `chrome-extension://<your extension id>,moz-extension://*`. Put the function URL in `VITE_APPCHECK_EXCHANGE_URL` and rebuild. Do not enforce App Check on Authentication.
+6b. Hosting: `firebase deploy --only hosting` (builds the playground, then serves `apps/site/public`).
 7. Firestore (optional sync): create a database and `firebase deploy --only firestore`.
 
 Never commit `.env.local` or the debug token.
@@ -106,6 +109,7 @@ Never commit `.env.local` or the debug token.
 | `pnpm zip` | Store / release ZIP |
 | `pnpm test` | Vitest unit tests (router, redaction, verification, Tier-0, radar, parsing, receipts, `analyze()`) |
 | `pnpm typecheck` | TypeScript strict mode, all packages |
+| `pnpm zip:firefox` | Firefox MV3 add-on ZIP plus the source ZIP for Mozilla review |
 | `pnpm build:site` | Bundle the hosted playground (`apps/site/public/playground.js`) |
 | `pnpm lint` | ESLint (bans `innerHTML`, `eval`, Firebase or `chrome.*` inside core) |
 

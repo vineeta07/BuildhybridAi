@@ -15,7 +15,9 @@
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "eslint .",
-    "build:site": "pnpm --filter @satark/site build"
+    "build:site": "pnpm --filter @satark/site build",
+    "build:firefox": "pnpm --filter @satark/extension build:firefox",
+    "zip:firefox": "pnpm --filter @satark/extension zip:firefox"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

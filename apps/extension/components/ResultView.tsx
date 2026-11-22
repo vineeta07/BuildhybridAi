@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { REASON_SENTENCE, type CheckResult, type Reason, type VerdictLevel } from '@satark/core';
+import { REASON_SENTENCE, type Analysis, type CheckResult, type Reason, type VerdictLevel } from '@satark/core';
 import { Alert, Octagon, ShieldCheck } from './Icons';
 import { ReceiptChip } from './ReceiptChip';
 import { firebaseConfigured } from '@/lib/firebase';
+import { TranslateBar } from './TranslateBar';
 import { Tier0Chip } from './Tier0Chip';
 
 const VERDICT: Record<VerdictLevel, { words: string; cls: string; Icon: typeof Alert }> = {
@@ -19,8 +20,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   unilateral_change: 'Terms can change', liability_limit: 'Liability limit', lock_in: 'Lock-in', other: 'Other',
 };
 
-function warningText(r: CheckResult): string {
-  const a = r.analysis;
+function warningText(a: Analysis | undefined): string {
   if (!a) return '';
   const lines = [
     `Satark check: ${VERDICT[a.verdict].words}. ${a.headline}`,
@@ -33,9 +33,11 @@ function warningText(r: CheckResult): string {
 }
 
 export function ResultView(props: {
-  result: CheckResult; onShow?: (quote: string, all: string[]) => void; onFix?: (fix: 'download' | 'cloud') => void;
+  result: CheckResult; outputLanguage?: string;
+  onShow?: (quote: string, all: string[]) => void; onFix?: (fix: 'download' | 'cloud') => void;
 }) {
   const { result } = props;
+  const [translated, setTranslated] = useState<Analysis | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const [copied, setCopied] = useState(false);
   useEffect(() => { heading.current?.focus(); }, [result]);
@@ -64,7 +66,7 @@ export function ResultView(props: {
     );
   }
 
-  const a = result.analysis!;
+  const a = translated ?? result.analysis!;
   const v = VERDICT[a.verdict];
   const quotes = a.reasons.map((x) => x.quote);
   return (
@@ -76,6 +78,7 @@ export function ResultView(props: {
           <p className="font-medium text-slate-900">{a.headline}</p>
         </div>
       </div>
+      {props.outputLanguage && <TranslateBar result={result} outputLanguage={props.outputLanguage} onChange={setTranslated} />}
       <p className="text-slate-800">{a.summary}</p>
       {result.evidenceUnverified && (
         <p className="rounded-lg bg-caution-bg px-3 py-2 text-sm text-caution">Evidence could not be verified, so this is shown as a caution.</p>
@@ -94,7 +97,7 @@ export function ResultView(props: {
       )}
       <ReceiptChip r={result.receipt} />
       <button type="button" className="btn-link text-sm" onClick={() => {
-        void navigator.clipboard.writeText(warningText(result)).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
+        void navigator.clipboard.writeText(warningText(a)).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
       }}>{copied ? 'Copied' : 'Copy a warning for family'}</button>
       <p className="text-xs text-slate-500">Satark helps you notice red flags. It cannot guarantee a page is safe.</p>
     </section>

@@ -3,6 +3,8 @@ rules_version = '2';
 // No page text, URLs or receipts are ever written.
 service cloud.firestore {
   match /databases/{database}/documents {
+    // appCheckQuota/{uid} is written only by the appCheckExchange function (Admin SDK);
+    // clients get no access because no rule matches it.
     match /users/{uid} {
       allow read, delete: if request.auth != null && request.auth.uid == uid;
       allow create, update: if request.auth != null && request.auth.uid == uid
