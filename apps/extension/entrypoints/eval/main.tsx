@@ -4,7 +4,7 @@ import '@/assets/tailwind.css';
 import { DEFAULT_SETTINGS, EMPTY_SIGNALS, flagged, scoreEval, shouldFlag, type EvalRun, type EvalSample } from '@satark/core';
 import data from '../../../../eval/samples.json';
 import { runEvalCheck } from '@/lib/engine';
-import { loadRemote } from '@/lib/firebase';
+import { loadRemote } from '@/lib/cloud';
 
 /**
  * Developer page (not linked from the toolbar): runs the 30 synthetic samples through

@@ -2,7 +2,7 @@
   "name": "satark",
   "type": "module",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "Apache-2.0",
   "packageManager": "pnpm@10.28.0",
   "engines": {
@@ -25,5 +25,10 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.73.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@grpc/grpc-js": "^1.13.6"
+    }
   }
 }

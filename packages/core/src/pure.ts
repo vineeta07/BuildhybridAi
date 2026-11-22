@@ -1,4 +1,4 @@
-// Everything in core that does not import firebase. Safe for the service worker and content script.
+// Everything in core that does not import firebase (analyze.ts only imports ai-adapter types). Safe for the service worker and content script.
 export * from './types';
 export * from './defaults';
 export * from './router';
@@ -14,3 +14,4 @@ export * from './samples';
 export * from './version';
 export * from './evaluate';
 export * from './translate';
+export * from './analyze';

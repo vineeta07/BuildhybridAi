@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { REASON_SENTENCE, isRtl, languageCode, type Analysis, type CheckResult, type Reason, type VerdictLevel } from '@satark/core';
 import { Alert, Octagon, ShieldCheck } from './Icons';
 import { ReceiptChip } from './ReceiptChip';
-import { firebaseConfigured } from '@/lib/firebase';
+import { firebaseConfigured } from '@/lib/config';
 import { TranslateBar } from './TranslateBar';
 import { Tier0Chip } from './Tier0Chip';
 

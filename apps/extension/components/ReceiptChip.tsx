@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { describeRedactions, reasonSentence, receiptChip, type Receipt } from '@satark/core';
 import { Chip, Cloud, Bolt } from './Icons';
-import { firebaseConfigured } from '@/lib/firebase';
+import { firebaseConfigured } from '@/lib/config';
 
 export function ReceiptChip({ r }: { r: Receipt }) {
   const [open, setOpen] = useState(false);

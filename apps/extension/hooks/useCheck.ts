@@ -4,7 +4,7 @@ import {
   type CheckResult, type ConsentRequest, type Lens, type PageSnapshot, type RemoteSettings, type UserSettings,
 } from '@satark/core';
 import { onDeviceStatus, runCheck } from '@/lib/engine';
-import { firebaseConfigured } from '@/lib/firebase';
+import { firebaseConfigured } from '@/lib/config';
 import { clearHighlight, highlight } from '@/lib/messaging';
 
 export type CheckState =

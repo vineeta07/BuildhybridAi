@@ -4,7 +4,7 @@ import {
   type Counters, type OnDeviceStatus, type Receipt, type RemoteSettings, type UserSettings,
 } from '@satark/core';
 import { getCounters, getReceipts, getSettings, onLocalChange, saveSettings } from '@/lib/storage';
-import { loadRemote } from '@/lib/firebase';
+import { loadRemote } from '@/lib/cloud';
 import { onDeviceStatus } from '@/lib/engine';
 
 export function useSettings() {

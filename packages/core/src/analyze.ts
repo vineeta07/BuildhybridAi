@@ -31,7 +31,11 @@ export interface AnalyzeArgs {
   runModel: RunModel;
   /** Shows the consent sheet. Resolves true for "Send redacted text". */
   askConsent: (req: ConsentRequest) => Promise<boolean>;
-  /** Called right before the first cloud-capable call (lazy App Check + anonymous auth). */
+  /**
+   * Called right before the first call whose primary route is the cloud (lazy App Check +
+   * anonymous auth). Not called for on-device routes: they stay free of sign-in traffic, and a
+   * failed sign-in can never block a check that could run on the device.
+   */
   ensureCloud?: () => Promise<void>;
   signal?: AbortSignal;
   now?: () => number;
@@ -101,7 +105,7 @@ export async function analyze(a: AnalyzeArgs): Promise<CheckResult> {
     }
 
     try {
-      if (mode !== 'ONLY_ON_DEVICE' && !cloudReady && a.ensureCloud) {
+      if (isCloudMode(mode) && !cloudReady && a.ensureCloud) {
         await a.ensureCloud();
         cloudReady = true;
       }

@@ -9,7 +9,7 @@ import { StatusDot } from '@/components/StatusLine';
 import { Shield } from '@/components/Icons';
 import { clearAllData, getCounters, getDebugToken, getGuardian, setDebugToken, setGuardian } from '@/lib/storage';
 import { deleteSyncedData, syncToFirestore } from '@/lib/sync';
-import { firebaseConfigured } from '@/lib/firebase';
+import { firebaseConfigured } from '@/lib/config';
 
 const PRIVACY_URL = 'https://satark-demo.web.app/privacy.html';
 

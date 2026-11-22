@@ -2,24 +2,9 @@ import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { initializeAppCheck, CustomProvider, setTokenAutoRefreshEnabled, type AppCheck } from 'firebase/app-check';
 import { getAI, GoogleAIBackend, type AI } from 'firebase/ai';
 import { DEFAULT_REMOTE, type RemoteSettings } from '@satark/core';
-import { cachedRemote, getDebugToken, getRemoteCache, setRemoteCache } from './storage';
+import { getDebugToken } from './storage';
 
-const env = import.meta.env;
-const config = {
-  apiKey: env.VITE_FIREBASE_API_KEY as string | undefined,
-  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN as string | undefined,
-  projectId: env.VITE_FIREBASE_PROJECT_ID as string | undefined,
-  appId: env.VITE_FIREBASE_APP_ID as string | undefined,
-  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET as string | undefined,
-  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID as string | undefined,
-};
-
-/** HTTPS URL of the appCheckExchange Cloud Function (functions/src/index.ts). Public, not a secret. */
-const EXCHANGE_URL = (env.VITE_APPCHECK_EXCHANGE_URL as string | undefined)?.trim() ?? '';
-export const productionAppCheck = Boolean(EXCHANGE_URL);
-
-/** False when the build has no Firebase web config: on-device still works, cloud is off. */
-export const firebaseConfigured = Boolean(config.apiKey && config.projectId && config.appId);
+import { EXCHANGE_URL, config, firebaseConfigured } from './config';
 
 let app: FirebaseApp | undefined;
 let ai: AI | undefined;
@@ -93,46 +78,36 @@ export function ensureCloud(): Promise<void> {
   return cloudReady;
 }
 
-const RC_TTL_MS = 12 * 60 * 60 * 1000;
 
-/** Remote Config (data only, never code). Falls back to cached, then baked-in, defaults. */
-export async function loadRemote(): Promise<RemoteSettings> {
-  const cached = await getRemoteCache();
-  if (cached && Date.now() - cached.at < RC_TTL_MS) return { ...DEFAULT_REMOTE, ...cached.values };
-  if (!firebaseConfigured) return cachedRemote();
+/** Fetches Remote Config values (data only, never code). Throws on failure; see cloud.ts. */
+export async function fetchRemoteValues(ttlMs: number): Promise<RemoteSettings> {
+  const { app: a } = await initFirebase();
+  const rc = await import('firebase/remote-config');
+  const remote = rc.getRemoteConfig(a);
+  remote.settings.minimumFetchIntervalMillis = ttlMs;
+  remote.defaultConfig = {
+    cloud_enabled: DEFAULT_REMOTE.cloudEnabled,
+    cloud_model: DEFAULT_REMOTE.cloudModel,
+    on_device_max_chars: DEFAULT_REMOTE.onDeviceMaxChars,
+    cloud_max_chars: DEFAULT_REMOTE.cloudMaxChars,
+    tier0_ai_threshold: DEFAULT_REMOTE.tier0AiThreshold,
+    scam_phrases_json: JSON.stringify(DEFAULT_REMOTE.scamPhrases),
+    min_extension_version: DEFAULT_REMOTE.minExtensionVersion,
+  };
+  await rc.fetchAndActivate(remote);
+  let phrases = DEFAULT_REMOTE.scamPhrases;
   try {
-    const { app: a } = await initFirebase();
-    const rc = await import('firebase/remote-config');
-    const remote = rc.getRemoteConfig(a);
-    remote.settings.minimumFetchIntervalMillis = RC_TTL_MS;
-    remote.defaultConfig = {
-      cloud_enabled: DEFAULT_REMOTE.cloudEnabled,
-      cloud_model: DEFAULT_REMOTE.cloudModel,
-      on_device_max_chars: DEFAULT_REMOTE.onDeviceMaxChars,
-      cloud_max_chars: DEFAULT_REMOTE.cloudMaxChars,
-      tier0_ai_threshold: DEFAULT_REMOTE.tier0AiThreshold,
-      scam_phrases_json: JSON.stringify(DEFAULT_REMOTE.scamPhrases),
-      min_extension_version: DEFAULT_REMOTE.minExtensionVersion,
-    };
-    await rc.fetchAndActivate(remote);
-    let phrases = DEFAULT_REMOTE.scamPhrases;
-    try {
-      const p: unknown = JSON.parse(rc.getString(remote, 'scam_phrases_json'));
-      if (Array.isArray(p) && p.every((x) => typeof x === 'string')) phrases = p.slice(0, 200);
-    } catch { /* keep defaults */ }
-    const num = (k: string, d: number) => { const n = rc.getNumber(remote, k); return Number.isFinite(n) && n > 0 ? n : d; };
-    const values: RemoteSettings = {
-      cloudEnabled: rc.getBoolean(remote, 'cloud_enabled'),
-      cloudModel: rc.getString(remote, 'cloud_model').trim(),
-      onDeviceMaxChars: num('on_device_max_chars', DEFAULT_REMOTE.onDeviceMaxChars),
-      cloudMaxChars: num('cloud_max_chars', DEFAULT_REMOTE.cloudMaxChars),
-      tier0AiThreshold: num('tier0_ai_threshold', DEFAULT_REMOTE.tier0AiThreshold),
-      scamPhrases: phrases,
-      minExtensionVersion: rc.getString(remote, 'min_extension_version') || DEFAULT_REMOTE.minExtensionVersion,
-    };
-    await setRemoteCache(values);
-    return values;
-  } catch {
-    return cachedRemote();
-  }
+    const p: unknown = JSON.parse(rc.getString(remote, 'scam_phrases_json'));
+    if (Array.isArray(p) && p.every((x) => typeof x === 'string')) phrases = p.slice(0, 200);
+  } catch { /* keep defaults */ }
+  const num = (k: string, d: number) => { const n = rc.getNumber(remote, k); return Number.isFinite(n) && n > 0 ? n : d; };
+  return {
+    cloudEnabled: rc.getBoolean(remote, 'cloud_enabled'),
+    cloudModel: rc.getString(remote, 'cloud_model').trim(),
+    onDeviceMaxChars: num('on_device_max_chars', DEFAULT_REMOTE.onDeviceMaxChars),
+    cloudMaxChars: num('cloud_max_chars', DEFAULT_REMOTE.cloudMaxChars),
+    tier0AiThreshold: num('tier0_ai_threshold', DEFAULT_REMOTE.tier0AiThreshold),
+    scamPhrases: phrases,
+    minExtensionVersion: rc.getString(remote, 'min_extension_version') || DEFAULT_REMOTE.minExtensionVersion,
+  };
 }

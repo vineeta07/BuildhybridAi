@@ -1,9 +1,10 @@
 import {
-  analyze, bindRunModel,
+  analyze,
   type CheckResult, type ConsentRequest, type Lens, type OnDeviceStatus, type PageSnapshot,
   type RemoteSettings, type UserSettings,
 } from '@satark/core';
-import { ensureCloud, firebaseConfigured, initFirebase } from './firebase';
+import { firebaseConfigured } from './config';
+import { ensureCloud, getRunModel } from './cloud';
 import { getCounters, recordReceipt } from './storage';
 import { syncToFirestore } from './sync';
 import { effectiveLanguage } from './lang';
@@ -65,24 +66,24 @@ export interface RunArgs {
 
 /** Same engine, for the evaluation page: no consent prompt (synthetic samples) and no receipt log. */
 export async function runEvalCheck(a: Omit<RunArgs, 'askConsent'>): Promise<CheckResult> {
-  const { ai } = await initFirebase();
+  const runModel = await getRunModel();
   return analyze({
     snap: a.snap, lens: a.lens, settings: { ...a.settings, outputLanguage: effectiveLanguage(a.settings) },
     remote: { ...a.remote, cloudEnabled: a.remote.cloudEnabled && firebaseConfigured },
     status: await onDeviceStatus(), online: navigator.onLine,
-    runModel: bindRunModel(ai), askConsent: async () => true, ensureCloud,
+    runModel, askConsent: async () => true, ensureCloud,
   });
 }
 
 /** Wires the pure core engine to Chrome and Firebase, then stores the metadata-only receipt. */
 export async function runCheck(a: RunArgs): Promise<CheckResult> {
-  const { ai } = await initFirebase();
+  const runModel = await getRunModel();
   const status = await onDeviceStatus();
   const result = await analyze({
     snap: a.snap, lens: a.lens, settings: { ...a.settings, outputLanguage: effectiveLanguage(a.settings) },
     remote: { ...a.remote, cloudEnabled: a.remote.cloudEnabled && firebaseConfigured },
     status, online: navigator.onLine,
-    runModel: bindRunModel(ai), askConsent: a.askConsent, ensureCloud,
+    runModel, askConsent: a.askConsent, ensureCloud,
     ...(a.signal ? { signal: a.signal } : {}),
   });
   await recordReceipt(result.receipt);

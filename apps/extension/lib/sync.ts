@@ -1,5 +1,6 @@
 import type { Counters, UserSettings } from '@satark/core';
-import { ensureCloud, firebaseConfigured, initFirebase } from './firebase';
+import { firebaseConfigured } from './config';
+import { ensureCloud, initFirebase } from './cloud';
 
 /**
  * Opt-in Firestore sync. Writes exactly three fields to users/{uid}: settings (mode and

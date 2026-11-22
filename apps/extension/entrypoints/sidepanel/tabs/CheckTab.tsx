@@ -43,9 +43,16 @@ export function CheckTab(props: {
     })();
   }, [props.requestToken]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Always re-read the page: the tab may have navigated since the last check.
+  // Keep the lens the user picked if it is the same page.
   const runNow = async () => {
-    const got = snap ? { snap, lens } : await load();
-    if (got) void check.run(got.snap, snap ? lens : got.lens);
+    const prevUrl = snap?.url;
+    const chosen = lens;
+    const got = await load();
+    if (!got) return;
+    const l = got.snap.url === prevUrl ? chosen : got.lens;
+    setLens(l);
+    void check.run(got.snap, l);
   };
 
   const st = check.state;

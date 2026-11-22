@@ -81,7 +81,7 @@ pnpm build
 
 Then open `chrome://extensions`, turn on Developer mode, choose **Load unpacked**, and select `apps/extension/.output/chrome-mv3`. Pin the icon, open Options, and paste your App Check debug token under Developer. `pnpm zip` produces the same build as a ZIP for a GitHub release.
 
-**Firefox:** `pnpm zip:firefox`, then open `about:debugging#/runtime/this-firefox` and choose *Load Temporary Add-on* on the `manifest.json` in `apps/extension/.output/firefox-mv3`. Satark opens as a sidebar. Firefox has no on-device AI, so checks use the cloud route (always redacted, always with consent). Needs Firefox 140+. For Mozilla review, upload `satark-0.1.0-sources.zip` as the source code; it builds with `pnpm install && pnpm zip:firefox` on Node 22 and pnpm 10.
+**Firefox:** `pnpm zip:firefox`, then open `about:debugging#/runtime/this-firefox` and choose *Load Temporary Add-on* on the `manifest.json` in `apps/extension/.output/firefox-mv3`. Satark opens as a sidebar. Firefox has no on-device AI, so checks use the cloud route (always redacted, always with consent). Needs Firefox 140+. For Mozilla review, upload `satark-<version>-sources.zip` as the source code; it builds with `pnpm install && pnpm zip:firefox` on Node 22 and pnpm 10.
 
 Without a Firebase config the build still works for on-device checks and the instant Tier-0 checks; cloud checks are off.
 

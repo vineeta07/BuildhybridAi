@@ -8,7 +8,7 @@ import { StatusDot } from '@/components/StatusLine';
 import { ModelSetup } from '@/components/ModelSetup';
 import { Gear, Shield } from '@/components/Icons';
 import { getConsentRemembered, isOnboarded, setConsentRemembered, setOnboarded } from '@/lib/storage';
-import { firebaseConfigured } from '@/lib/firebase';
+import { firebaseConfigured } from '@/lib/config';
 import { effectiveLanguage } from '@/lib/lang';
 import { CheckTab } from './tabs/CheckTab';
 import { PasteTab } from './tabs/PasteTab';
