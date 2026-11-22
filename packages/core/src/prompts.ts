@@ -1,5 +1,6 @@
 import { hostOf } from './domain';
 import type { Lens, PageSnapshot } from './types';
+import { languageCode, languageName } from './translate';
 
 export const PROMPT_PACK_VERSION = 'v1';
 
@@ -40,8 +41,9 @@ export function buildPrompt(lens: Lens, snap: Pick<PageSnapshot, 'url' | 'title'
   const where = snap.origin === 'page'
     ? `Page: ${hostOf(snap.url) || 'unknown'} | ${snap.title.slice(0, 120)}`
     : snap.origin === 'selection' ? `Selected text from: ${hostOf(snap.url) || 'unknown'}` : 'Pasted text';
-  const lang = opts.cloud && opts.outputLanguage && opts.outputLanguage.toLowerCase() !== 'english'
-    ? `\nWrite the headline, summary, explanations and advice in ${opts.outputLanguage}. The quote stays in the original language.`
+  const code = languageCode(opts.outputLanguage ?? 'en');
+  const lang = opts.cloud && code !== 'en'
+    ? `\nWrite the headline, summary, explanations and advice in ${languageName(code)} (${code}). The quote stays in the original language, copied exactly.`
     : '';
   const tail = opts.strictJson ? 'Return valid JSON only. No prose, no code fences.' : 'Return only JSON that matches the schema.';
   return `${head}${lang}

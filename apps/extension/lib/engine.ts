@@ -6,6 +6,7 @@ import {
 import { ensureCloud, firebaseConfigured, initFirebase } from './firebase';
 import { getCounters, recordReceipt } from './storage';
 import { syncToFirestore } from './sync';
+import { effectiveLanguage } from './lang';
 
 interface LanguageModelLike {
   availability(o?: unknown): Promise<OnDeviceStatus>;
@@ -66,7 +67,7 @@ export interface RunArgs {
 export async function runEvalCheck(a: Omit<RunArgs, 'askConsent'>): Promise<CheckResult> {
   const { ai } = await initFirebase();
   return analyze({
-    snap: a.snap, lens: a.lens, settings: a.settings,
+    snap: a.snap, lens: a.lens, settings: { ...a.settings, outputLanguage: effectiveLanguage(a.settings) },
     remote: { ...a.remote, cloudEnabled: a.remote.cloudEnabled && firebaseConfigured },
     status: await onDeviceStatus(), online: navigator.onLine,
     runModel: bindRunModel(ai), askConsent: async () => true, ensureCloud,
@@ -78,7 +79,7 @@ export async function runCheck(a: RunArgs): Promise<CheckResult> {
   const { ai } = await initFirebase();
   const status = await onDeviceStatus();
   const result = await analyze({
-    snap: a.snap, lens: a.lens, settings: a.settings,
+    snap: a.snap, lens: a.lens, settings: { ...a.settings, outputLanguage: effectiveLanguage(a.settings) },
     remote: { ...a.remote, cloudEnabled: a.remote.cloudEnabled && firebaseConfigured },
     status, online: navigator.onLine,
     runModel: bindRunModel(ai), askConsent: a.askConsent, ensureCloud,

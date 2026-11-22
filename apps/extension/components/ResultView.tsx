@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { REASON_SENTENCE, type Analysis, type CheckResult, type Reason, type VerdictLevel } from '@satark/core';
+import { REASON_SENTENCE, isRtl, languageCode, type Analysis, type CheckResult, type Reason, type VerdictLevel } from '@satark/core';
 import { Alert, Octagon, ShieldCheck } from './Icons';
 import { ReceiptChip } from './ReceiptChip';
 import { firebaseConfigured } from '@/lib/firebase';
@@ -67,32 +67,37 @@ export function ResultView(props: {
   }
 
   const a = translated ?? result.analysis!;
+  // Language of the generated text on screen: translated locally, answered by the cloud, or English.
+  const shownLang = props.outputLanguage && (translated || result.receipt.actualSource === 'cloud') ? languageCode(props.outputLanguage) : 'en';
+  const t = { lang: shownLang, dir: isRtl(shownLang) ? 'rtl' as const : 'auto' as const };
+  const cloudExplain = props.onFix && result.receipt.requestedMode !== 'private' && firebaseConfigured && navigator.onLine
+    ? () => props.onFix?.('cloud') : undefined;
   const v = VERDICT[a.verdict];
   const quotes = a.reasons.map((x) => x.quote);
   return (
     <section aria-labelledby="result-h" className="space-y-3">
       <div className={`flex items-start gap-3 rounded-xl p-4 ${v.cls}`}>
         <v.Icon width={26} height={26} className="mt-1 shrink-0" />
-        <div>
+        <div className="min-w-0 flex-1">
           <h2 id="result-h" ref={heading} tabIndex={-1} className="font-display font-semibold text-xl">{v.words}</h2>
-          <p className="font-medium text-slate-900">{a.headline}</p>
+          <p className="font-medium text-slate-900" {...t}>{a.headline}</p>
         </div>
       </div>
-      {props.outputLanguage && <TranslateBar result={result} outputLanguage={props.outputLanguage} onChange={setTranslated} />}
-      <p className="text-slate-800">{a.summary}</p>
+      {props.outputLanguage && <TranslateBar result={result} outputLanguage={props.outputLanguage} onChange={setTranslated} onCloudExplain={cloudExplain} />}
+      <p className="text-slate-800" {...t}>{a.summary}</p>
       {result.evidenceUnverified && (
         <p className="rounded-lg bg-caution-bg px-3 py-2 text-sm text-caution">Evidence could not be verified, so this is shown as a caution.</p>
       )}
       {result.partialNote && <p className="text-sm text-slate-600">{result.partialNote}.</p>}
       {a.reasons.length > 0 && (
         <ul className="space-y-2" aria-label="Reasons">
-          {a.reasons.map((x, i) => <ReasonRow key={i} r={x} onShow={props.onShow ? () => props.onShow?.(x.quote, quotes) : undefined} />)}
+          {a.reasons.map((x, i) => <ReasonRow key={i} r={x} t={t} onShow={props.onShow ? () => props.onShow?.(x.quote, quotes) : undefined} />)}
         </ul>
       )}
       {a.advice.length > 0 && (
         <div>
           <h3 className="font-semibold">What you can do</h3>
-          <ul className="mt-1 list-disc space-y-1 pl-5 text-slate-800">{a.advice.map((x, i) => <li key={i}>{x}</li>)}</ul>
+          <ul className="mt-1 list-disc space-y-1 ps-5 text-slate-800" {...t}>{a.advice.map((x, i) => <li key={i}>{x}</li>)}</ul>
         </div>
       )}
       <ReceiptChip r={result.receipt} />
@@ -104,7 +109,7 @@ export function ResultView(props: {
   );
 }
 
-function ReasonRow({ r, onShow }: { r: Reason; onShow?: (() => void) | undefined }) {
+function ReasonRow({ r, t, onShow }: { r: Reason; t: { lang: string; dir: 'rtl' | 'auto' }; onShow?: (() => void) | undefined }) {
   const sev = r.severity === 'high' ? 'text-danger' : r.severity === 'medium' ? 'text-caution' : 'text-slate-600';
   return (
     <li className="card space-y-2 p-3">
@@ -112,8 +117,8 @@ function ReasonRow({ r, onShow }: { r: Reason; onShow?: (() => void) | undefined
         <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-700">{CATEGORY_LABEL[r.category] ?? r.category}</span>
         <span className={`font-medium ${sev}`}>{r.severity} severity</span>
       </div>
-      <p className="text-slate-800">{r.explanation}</p>
-      <blockquote className="border-l-2 border-slate-300 pl-3 font-display text-[15px] text-slate-800">“{r.quote}”</blockquote>
+      <p className="text-slate-800" {...t}>{r.explanation}</p>
+      <blockquote dir="auto" className="border-s-2 border-slate-300 ps-3 font-display text-[15px] text-slate-800">“{r.quote}”</blockquote>
       {onShow && <button type="button" className="btn-link text-sm" onClick={onShow}>Show on page</button>}
     </li>
   );

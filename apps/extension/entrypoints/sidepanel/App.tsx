@@ -9,6 +9,7 @@ import { ModelSetup } from '@/components/ModelSetup';
 import { Gear, Shield } from '@/components/Icons';
 import { getConsentRemembered, isOnboarded, setConsentRemembered, setOnboarded } from '@/lib/storage';
 import { firebaseConfigured } from '@/lib/firebase';
+import { effectiveLanguage } from '@/lib/lang';
 import { CheckTab } from './tabs/CheckTab';
 import { PasteTab } from './tabs/PasteTab';
 import { DashboardTab } from './tabs/DashboardTab';
@@ -121,10 +122,10 @@ export default function App() {
 
       <main className="flex-1 p-4">
         <div role="tabpanel" id="panel-check" aria-labelledby="tab-check" hidden={tab !== 'check'}>
-          <CheckTab check={pageCheck} remote={remote} requestToken={checkToken} onFix={onFix} outputLanguage={settings.outputLanguage} />
+          <CheckTab check={pageCheck} remote={remote} requestToken={checkToken} onFix={onFix} outputLanguage={effectiveLanguage(settings)} />
         </div>
         <div role="tabpanel" id="panel-paste" aria-labelledby="tab-paste" hidden={tab !== 'paste'}>
-          <PasteTab check={pasteCheck} incoming={incoming} onFix={onFix} outputLanguage={settings.outputLanguage} />
+          <PasteTab check={pasteCheck} incoming={incoming} onFix={onFix} outputLanguage={effectiveLanguage(settings)} />
         </div>
         <div role="tabpanel" id="panel-dashboard" aria-labelledby="tab-dashboard" hidden={tab !== 'dashboard'}>
           {tab === 'dashboard' && <DashboardTab />}

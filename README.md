@@ -35,7 +35,7 @@ Firebase: AI Logic | App Check | Auth (anonymous) | Remote Config | Hosting
 - `apps/extension` — WXT + React + Tailwind. Wires core to Chrome and Firebase.
 - `apps/site` — Firebase Hosting: landing page, privacy policy, fictional demo pages, and a no-install **playground** (quick check and redaction preview, runs in the tab, sends nothing).
 
-Also included: **production App Check** through a Cloud Function (`functions/`), **translated verdicts** (Hindi and other languages, on-device with Chrome's Translator API; quotes stay verbatim), a **Firefox build**, a developer **evaluation page** (Options > Developer) that runs `eval/samples.json` through both routes, **opt-in Firestore sync** of settings and counters (never page text), **Guardian mode**, and a dark-pattern check for pre-ticked paid add-ons.
+Also included: **production App Check** through a Cloud Function (`functions/`), **verdicts in 58 languages** (Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Odia, Urdu and more; translated on-device by Chrome's Translator API when it supports the language, otherwise answered by the cloud on request; right-to-left scripts supported; quotes always stay verbatim), a **Firefox build**, a developer **evaluation page** (Options > Developer) that runs `eval/samples.json` through both routes, **opt-in Firestore sync** of settings and counters (never page text), **Guardian mode**, and a dark-pattern check for pre-ticked paid add-ons.
 
 ## Design
 

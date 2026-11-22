@@ -20,7 +20,7 @@ export const DEFAULT_REMOTE: RemoteSettings = {
 export const DEFAULT_SETTINGS: UserSettings = {
   mode: 'smart',
   simulate: false,
-  outputLanguage: 'English',
+  outputLanguage: 'en',
   keepSiteNames: false,
   sync: false,
 };
