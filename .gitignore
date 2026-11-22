@@ -1,0 +1,11 @@
+node_modules/
+.output/
+.wxt/
+dist/
+coverage/
+.env.local
+.env.*.local
+*.pem
+*.crx
+.DS_Store
+.firebase/

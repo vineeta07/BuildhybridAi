@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Satark privacy policy</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<main>
+  <h1>Satark privacy policy</h1>
+  <p class="muted">Last updated: November 22, 2026</p>
+  <h2>Single purpose</h2>
+  <p>Satark explains scams and fine print on the page or text the user chooses to check.</p>
+  <h2>What Satark reads</h2>
+  <p>Only the page you choose to check, after you click the Satark icon, press its shortcut, or use "Check selection with Satark", and text you paste into the side panel. If you turn on Guardian mode, Satark also runs an instant on-device quick check (no AI, no network) on pages you open, to show a warning badge.</p>
+  <h2>Where your text goes</h2>
+  <ul>
+    <li><strong>On-device route:</strong> the text is analysed by Gemini Nano inside Chrome on your computer. It is not sent anywhere.</li>
+    <li><strong>Cloud route:</strong> only after you agree, Satark first replaces common personal details (email, phone, Aadhaar, PAN, card, UPI, IFSC, account numbers, OTPs, SSNs) with placeholders, then sends the redacted text to Google's Gemini through Firebase AI Logic for that one check. Satark removes common patterns but cannot guarantee that nothing sensitive remains; the consent screen shows exactly what will be sent.</li>
+  </ul>
+  <h2>What Satark stores</h2>
+  <p>On your computer only: your settings and a log of the last 50 Privacy Receipts. Receipts hold metadata (time, route, model, how many characters were sent, how many items were hidden). They never hold the page text or the AI reply. Site names are stored only if you turn that on. You can export or clear the log at any time.</p>
+  <h2>Firebase services</h2>
+  <p>Satark uses Firebase Authentication (anonymous, no name or email), App Check (to protect the cloud route from abuse) and Remote Config (to receive settings such as phrase lists and a cloud on/off switch). These make small requests that carry no page content, and the first two run only before your first cloud check.</p>
+  <h2>What Satark never does</h2>
+  <ul>
+    <li>It does not sell or share your data, and does not use it for advertising or anything unrelated to the check you asked for.</li>
+    <li>It does not read your history, cookies, downloads or other tabs.</li>
+    <li>It does not run remote code.</li>
+  </ul>
+  <h2>Contact</h2>
+  <p>Open an issue on the project's GitHub repository.</p>
+  <p><a href="/">Back to Satark</a></p>
+</main>
+</body>
+</html>

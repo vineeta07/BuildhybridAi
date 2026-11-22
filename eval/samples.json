@@ -1,0 +1,185 @@
+{
+  "note": "30 synthetic, clearly fictional samples. Labels: scam/risky should get caution or danger; benign/ordinary should get safe.",
+  "samples": [
+    {
+      "id": "fake-kyc",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Dear customer, your Demo Bank account will be blocked today due to incomplete KYC. Update now at http://demobank-kyc.example to avoid suspension. Share the OTP you receive with our executive."
+    },
+    {
+      "id": "digital-arrest",
+      "lens": "scam",
+      "label": "scam",
+      "text": "This is Inspector Sharma from the Cyber Crime Cell. A parcel with illegal items was booked in your name. You are under digital arrest. Stay on this video call, do not tell anyone, and transfer Rs 2,00,000 to the safe RBI verification account."
+    },
+    {
+      "id": "job-fee",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Congratulations! You are selected for a work from home data entry job paying Rs 45,000 per month. Pay a one-time registration fee of Rs 1,999 via UPI to confirm your seat today."
+    },
+    {
+      "id": "lottery",
+      "lens": "scam",
+      "label": "scam",
+      "text": "You have won Rs 25,00,000 in the Demo Mobile Lucky Draw 2026! To claim your prize, pay the processing tax of Rs 8,500 and send your Aadhaar and PAN details on WhatsApp."
+    },
+    {
+      "id": "upi-collect",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Hi, I sent Rs 5,000 to your number by mistake. I have sent you a UPI collect request, please approve it and enter your UPI PIN to refund my money. Urgent please."
+    },
+    {
+      "id": "courier-customs",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Demo Courier: your international parcel is held at customs. Pay customs duty of Rs 349 within 24 hours at http://demo-courier-duty.example or it will be returned."
+    },
+    {
+      "id": "investment-group",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Join our VIP stock tips group. Guaranteed returns of 30% every week. Deposit at least Rs 50,000 in our app today, limited seats, only 5 left."
+    },
+    {
+      "id": "electricity",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Dear consumer, your electricity will be disconnected tonight at 9:30 pm because your last bill was not updated. Call our officer immediately on this number."
+    },
+    {
+      "id": "refund-anydesk",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Your Demo Shop refund of Rs 12,499 is pending. To receive it, install AnyDesk and share the 9-digit code with our support agent so we can process the refund."
+    },
+    {
+      "id": "tax-refund",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Income tax refund of Rs 15,490 approved. Verify your bank account and card details at the link below within 24 hours to receive the amount."
+    },
+    {
+      "id": "romance-crypto",
+      "lens": "scam",
+      "label": "scam",
+      "text": "I'm stuck at the airport and my bank card is blocked. Please send me Rs 30,000 in crypto or gift cards, I will pay you back tomorrow. Don't tell my family."
+    },
+    {
+      "id": "sim-swap",
+      "lens": "scam",
+      "label": "scam",
+      "text": "Your SIM card will be deactivated in 2 hours as per new rules. Reply with your Aadhaar number and the code you just received to keep your number active."
+    },
+    {
+      "id": "delivery",
+      "lens": "scam",
+      "label": "benign",
+      "text": "Your Demo Shop order #4821 has been shipped and will arrive on Thursday. Track it in the Demo Shop app."
+    },
+    {
+      "id": "otp-warning",
+      "lens": "scam",
+      "label": "benign",
+      "text": "482913 is your OTP to log in to Demo Bank. Do not share it with anyone. Demo Bank will never call you to ask for it."
+    },
+    {
+      "id": "salary",
+      "lens": "scam",
+      "label": "benign",
+      "text": "Rs 52,000 has been credited to your account on 01-Nov. Available balance can be checked in the Demo Bank app."
+    },
+    {
+      "id": "appointment",
+      "lens": "scam",
+      "label": "benign",
+      "text": "Reminder: your appointment with Dr. Rao at City Clinic is tomorrow at 10:30 am. Reply C to cancel."
+    },
+    {
+      "id": "bill",
+      "lens": "scam",
+      "label": "benign",
+      "text": "Your Demo Power bill of Rs 1,240 for October is generated. Due date 15 Nov. Pay in the official app or at any service centre."
+    },
+    {
+      "id": "newsletter",
+      "lens": "scam",
+      "label": "benign",
+      "text": "This week at the library: a children's story hour on Saturday and a book sale on Sunday. Everyone is welcome."
+    },
+    {
+      "id": "friend",
+      "lens": "scam",
+      "label": "benign",
+      "text": "Hey, are we still on for dinner on Friday? I booked a table for 8 at the usual place."
+    },
+    {
+      "id": "bank-alert",
+      "lens": "scam",
+      "label": "benign",
+      "text": "Demo Bank: a new device logged in to your account. If this was not you, call the number on the back of your card or visit a branch."
+    },
+    {
+      "id": "auto-renew-triple",
+      "lens": "fineprint",
+      "label": "risky",
+      "text": "Your introductory plan renews automatically every month at three times the introductory price. To cancel, send a signed letter by post at least 45 days before renewal."
+    },
+    {
+      "id": "penalty-interest",
+      "lens": "fineprint",
+      "label": "risky",
+      "text": "Late payments attract penalty interest of 3% per month compounded monthly plus a fee of Rs 500 per missed instalment. All fees are non-refundable."
+    },
+    {
+      "id": "data-sale",
+      "lens": "fineprint",
+      "label": "risky",
+      "text": "We may sell or share your personal information, browsing history and contacts with marketing partners and other third parties for their own purposes."
+    },
+    {
+      "id": "arbitration",
+      "lens": "fineprint",
+      "label": "risky",
+      "text": "All disputes will be settled by binding arbitration in a location of our choosing. You waive your right to a jury trial and to join any class action."
+    },
+    {
+      "id": "unilateral",
+      "lens": "fineprint",
+      "label": "risky",
+      "text": "We may change these terms, fees or features at any time without notice. Continued use of the service means you accept the changes."
+    },
+    {
+      "id": "rent-lockin",
+      "lens": "fineprint",
+      "label": "risky",
+      "text": "The tenant agrees to a lock-in period of 24 months. If the tenant leaves early, the entire security deposit is forfeited and rent for the remaining lock-in period is payable."
+    },
+    {
+      "id": "plain-cancel",
+      "lens": "fineprint",
+      "label": "ordinary",
+      "text": "You can cancel your subscription at any time from the Account page. Your plan stays active until the end of the current billing month, and you will not be charged again."
+    },
+    {
+      "id": "refund-30",
+      "lens": "fineprint",
+      "label": "ordinary",
+      "text": "If you are not satisfied, request a full refund within 30 days of purchase by email or from the app."
+    },
+    {
+      "id": "privacy-basic",
+      "lens": "fineprint",
+      "label": "ordinary",
+      "text": "We use your email address only to send receipts and service updates. We do not sell your personal information. You can delete your account at any time."
+    },
+    {
+      "id": "rent-notice",
+      "lens": "fineprint",
+      "label": "ordinary",
+      "text": "Either party may end this agreement with one month's written notice. The security deposit will be returned within 15 days of handover, less any documented repair costs."
+    }
+  ]
+}

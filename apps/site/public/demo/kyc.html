@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo Bank - Update KYC (Satark demo page)</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="banner">Satark demo page. Fictional, for testing only. Do not enter real details.</div>
+<main>
+  <h1>Demo Bank: urgent KYC update</h1>
+  <p><strong>Your account will be blocked within 24 hours</strong> because your KYC is pending. To avoid suspension, verify your details now.</p>
+  <p>Offer ends in 09:59. Only 3 verification slots left today.</p>
+  <p>Our officer will call you. Share the OTP sent to your mobile to complete verification. Do not tell anyone about this process, as it is confidential.</p>
+  <p>If you face problems, install AnyDesk so our support team can help you.</p>
+  <form action="https://collector.example.net/submit" class="card" onsubmit="return false">
+    <p><label>Account number <input name="acct" autocomplete="off" /></label></p>
+    <p><label>OTP <input name="otp" autocomplete="one-time-code" /></label></p>
+    <p><label>Net-banking password <input type="password" autocomplete="off" /></label></p>
+    <p><button disabled>Verify (disabled on demo)</button></p>
+  </form>
+  <p>Help: <a href="https://collector.example.net/help">www.demobank.example.com/help</a></p>
+</main>
+</body>
+</html>
