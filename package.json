@@ -14,7 +14,8 @@
     "zip": "pnpm --filter @satark/extension zip",
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build:site": "pnpm --filter @satark/site build"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

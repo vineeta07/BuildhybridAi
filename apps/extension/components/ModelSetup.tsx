@@ -36,7 +36,7 @@ export function ModelSetup(props: { status: OnDeviceStatus | 'checking'; onDone:
         <button type="button" className="btn-primary" onClick={start}>Enable on-device AI</button>
       ) : (
         <div>
-          <div className="h-2 w-full overflow-hidden rounded bg-slate-200" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} aria-label="Model download">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} aria-label="Model download">
             <div className="h-full bg-brand transition-all" style={{ width: `${Math.round(progress * 100)}%` }} />
           </div>
           <p className="mt-1 text-sm text-slate-600" aria-live="polite">{progress >= 1 ? 'Ready.' : `Downloading ${Math.round(progress * 100)}%`}</p>

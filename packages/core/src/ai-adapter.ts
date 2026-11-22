@@ -18,14 +18,16 @@ export async function runModel(
   ai: AI, sdkMode: SdkMode, prompt: string, cloudModel?: string,
 ): Promise<RunResult> {
   // A new instance per request: config lives as long as the instance.
-  const inCloudParams = {
-    ...(cloudModel ? { model: cloudModel } : {}), // empty = SDK default (gemini-2.5-flash-lite)
+  // The SDK requires a model name even in hybrid mode (AI/no-model), so an empty
+  // Remote Config value means the documented default, passed explicitly.
+  const inCloudParams: ModelParams = {
+    model: cloudModel || DEFAULT_CLOUD_MODEL,
     generationConfig: {
       responseMimeType: 'application/json',
       responseSchema: analysisSchema,
       temperature: 0.2,
     },
-  } as ModelParams;
+  };
   const model = getGenerativeModel(ai, {
     mode: MODE[sdkMode],
     inCloudParams,

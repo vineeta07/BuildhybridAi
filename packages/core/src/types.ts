@@ -24,6 +24,8 @@ export interface PageSignals {
   isHttps: boolean; hasPasswordField: boolean; hasOtpField: boolean; hasCardField: boolean;
   hasCountdownLike: boolean; hostIsIp: boolean; hostHasPunycode: boolean;
   subdomainDepth: number; externalFormAction: boolean; linkHostMismatches: number;
+  /** Pre-ticked checkboxes that add a paid extra or a subscription (dark pattern). */
+  preTickedAddOns?: number;
 }
 
 export interface PageSnapshot {
@@ -105,6 +107,8 @@ export interface UserSettings {
   simulate: boolean;
   outputLanguage: string;
   keepSiteNames: boolean;
+  /** Opt-in: sync settings and aggregate counters (never page text) to Firestore. */
+  sync: boolean;
 }
 
 export type Msg =

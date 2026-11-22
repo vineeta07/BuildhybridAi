@@ -63,7 +63,7 @@ export function CheckTab(props: {
 
       {snap && (
         <div className="space-y-2">
-          <p className="truncate text-sm font-medium text-slate-800" title={snap.title}>{snap.title || snap.url}</p>
+          <p className="truncate font-display font-semibold text-base text-slate-900" title={snap.title}>{snap.title || snap.url}</p>
           {t0 && <Tier0Chip r={t0} />}
           {!snap.text.trim() && <p className="text-sm text-slate-600">This page has no readable text.</p>}
         </div>
@@ -74,7 +74,7 @@ export function CheckTab(props: {
           <fieldset className="flex gap-1 rounded-lg bg-slate-100 p-1">
             <legend className="sr-only">What to look for</legend>
             {(['scam', 'fineprint'] as const).map((l) => (
-              <label key={l} className={`flex-1 cursor-pointer rounded-md px-3 py-1.5 text-center text-sm font-medium ${lens === l ? 'bg-white shadow-sm text-brand' : 'text-slate-600'}`}>
+              <label key={l} className={`flex-1 cursor-pointer rounded-md px-3 py-1.5 text-center text-sm font-medium ${lens === l ? 'bg-white text-slate-900 shadow-[0_1px_2px_rgba(43,41,37,0.08)]' : 'text-slate-600'}`}>
                 <input type="radio" name="lens" value={l} checked={lens === l} onChange={() => setLens(l)} className="sr-only" />
                 {l === 'scam' ? 'Scams' : 'Fine print'}
               </label>

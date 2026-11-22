@@ -4,7 +4,8 @@ import {
   type RemoteSettings, type UserSettings,
 } from '@satark/core';
 import { ensureCloud, firebaseConfigured, initFirebase } from './firebase';
-import { recordReceipt } from './storage';
+import { getCounters, recordReceipt } from './storage';
+import { syncToFirestore } from './sync';
 
 interface LanguageModelLike {
   availability(o?: unknown): Promise<OnDeviceStatus>;
@@ -61,6 +62,17 @@ export interface RunArgs {
   askConsent: (req: ConsentRequest) => Promise<boolean>; signal?: AbortSignal;
 }
 
+/** Same engine, for the evaluation page: no consent prompt (synthetic samples) and no receipt log. */
+export async function runEvalCheck(a: Omit<RunArgs, 'askConsent'>): Promise<CheckResult> {
+  const { ai } = await initFirebase();
+  return analyze({
+    snap: a.snap, lens: a.lens, settings: a.settings,
+    remote: { ...a.remote, cloudEnabled: a.remote.cloudEnabled && firebaseConfigured },
+    status: await onDeviceStatus(), online: navigator.onLine,
+    runModel: bindRunModel(ai), askConsent: async () => true, ensureCloud,
+  });
+}
+
 /** Wires the pure core engine to Chrome and Firebase, then stores the metadata-only receipt. */
 export async function runCheck(a: RunArgs): Promise<CheckResult> {
   const { ai } = await initFirebase();
@@ -73,5 +85,6 @@ export async function runCheck(a: RunArgs): Promise<CheckResult> {
     ...(a.signal ? { signal: a.signal } : {}),
   });
   await recordReceipt(result.receipt);
+  if (a.settings.sync) void getCounters().then((c) => syncToFirestore(a.settings, c)).catch(() => undefined);
   return result;
 }

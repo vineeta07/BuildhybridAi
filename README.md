@@ -33,7 +33,13 @@ Firebase: AI Logic | App Check | Auth (anonymous) | Remote Config | Hosting
 
 - `packages/core` — pure TypeScript: router, redaction, schema + validator, quote verification, Tier-0 heuristics, clause radar, prompts, receipts, and `analyze()` (the only path to a model). `firebase/ai` is imported only in `ai-adapter.ts` and `schema.ts`.
 - `apps/extension` — WXT + React + Tailwind. Wires core to Chrome and Firebase.
-- `apps/site` — Firebase Hosting: landing page, privacy policy, fictional demo pages.
+- `apps/site` — Firebase Hosting: landing page, privacy policy, fictional demo pages, and a no-install **playground** (quick check and redaction preview, runs in the tab, sends nothing).
+
+Also included: a developer **evaluation page** (Options > Developer) that runs `eval/samples.json` through both routes, **opt-in Firestore sync** of settings and counters (never page text), **Guardian mode**, and a dark-pattern check for pre-ticked paid add-ons.
+
+## Design
+
+Calm and readable rather than flashy: warm paper background, dark warm text, one muted sage-teal accent, and soft pastel only where attention is needed (the verdict and the quick-check chip). Serif headings, no gradients or glow. Every text colour meets WCAG AA contrast, verdicts always pair colour with an icon and words, and everything works by keyboard.
 
 ## The router
 
@@ -86,7 +92,8 @@ On-device AI needs desktop Chrome with 22 GB of free disk and a GPU with more th
 3. App Check: register the web app (Custom provider) and enforce it for AI Logic. In Options, type `true` as the debug token, reopen the side panel, copy the token the SDK logs in the panel's DevTools console, register it under *Manage debug tokens*, then paste the real token in Options.
 4. Authentication: enable the Anonymous provider.
 5. Remote Config: `firebase deploy --only remoteconfig` (template in `remoteconfig.template.json`).
-6. Hosting: `firebase deploy --only hosting` (serves `apps/site/public`).
+6. Hosting: `firebase deploy --only hosting` (builds the playground, then serves `apps/site/public`).
+7. Firestore (optional sync): create a database and `firebase deploy --only firestore`.
 
 Never commit `.env.local` or the debug token.
 
@@ -99,6 +106,7 @@ Never commit `.env.local` or the debug token.
 | `pnpm zip` | Store / release ZIP |
 | `pnpm test` | Vitest unit tests (router, redaction, verification, Tier-0, radar, parsing, receipts, `analyze()`) |
 | `pnpm typecheck` | TypeScript strict mode, all packages |
+| `pnpm build:site` | Bundle the hosted playground (`apps/site/public/playground.js`) |
 | `pnpm lint` | ESLint (bans `innerHTML`, `eval`, Firebase or `chrome.*` inside core) |
 
 ## Privacy

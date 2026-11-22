@@ -2,5 +2,17 @@
   "name": "@satark/site",
   "version": "0.1.0",
   "private": true,
-  "license": "Apache-2.0"
+  "type": "module",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "esbuild src/playground.ts --bundle --minify --format=esm --target=es2022 --outfile=public/playground.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@satark/core": "workspace:*"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "typescript": "~5.9.3"
+  }
 }

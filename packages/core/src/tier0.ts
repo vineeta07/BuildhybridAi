@@ -83,6 +83,10 @@ export function tier0(i: Tier0Input): Tier0Result {
     add('link_mismatch', 'A link shows one website but goes to another', Math.min(40, s.linkHostMismatches * 25));
   }
 
+  if ((s.preTickedAddOns ?? 0) > 0) {
+    add('preticked', 'A paid extra or subscription is already ticked for you', Math.min(30, (s.preTickedAddOns ?? 0) * 15));
+  }
+
   const score = findings.reduce((a, f) => a + f.points, 0);
   const level = score >= 60 ? 'red' : score >= 30 ? 'amber' : 'neutral';
   return { score, level, findings, suggestedLens: suggestLens(i.url, i.title, i.text) };
@@ -97,5 +101,5 @@ export const TIER0_LABEL: Record<Tier0Result['level'], string> = {
 export const EMPTY_SIGNALS: PageSignals = {
   isHttps: true, hasPasswordField: false, hasOtpField: false, hasCardField: false,
   hasCountdownLike: false, hostIsIp: false, hostHasPunycode: false,
-  subdomainDepth: 0, externalFormAction: false, linkHostMismatches: 0,
+  subdomainDepth: 0, externalFormAction: false, linkHostMismatches: 0, preTickedAddOns: 0,
 };

@@ -22,6 +22,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
   simulate: false,
   outputLanguage: 'English',
   keepSiteNames: false,
+  sync: false,
 };
 
 export const DEFAULT_CLOUD_MODEL = 'gemini-2.5-flash-lite';

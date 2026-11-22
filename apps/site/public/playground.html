@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Satark playground</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<main>
+  <p class="eyebrow"><a href="/">Satark</a></p>
+  <h1>Playground</h1>
+  <p class="lede">Try Satark's instant quick check and its privacy step without installing anything. This runs entirely in your browser tab: nothing you paste is sent anywhere. The full AI explanation runs in the Chrome extension.</p>
+  <div class="card">
+    <label for="pg-text"><strong>Paste a message, email or agreement</strong></label>
+    <textarea id="pg-text" rows="8" placeholder="For example, an SMS that says your account will be blocked"></textarea>
+    <div class="row">
+      <button id="pg-run" class="btn-primary" type="button">Run the quick check</button>
+      <button id="pg-sample" class="btn-link" type="button">Use a fictional sample</button>
+    </div>
+  </div>
+  <section id="pg-out" aria-live="polite"></section>
+  <p class="muted">Do not paste real passwords or OTPs anywhere, including here.</p>
+</main>
+<script type="module" src="/playground.js"></script>
+</body>
+</html>

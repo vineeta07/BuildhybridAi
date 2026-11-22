@@ -1,20 +1,47 @@
 @import "tailwindcss";
 
+/*
+ * Satark palette: warm paper, dark warm ink, one muted sage-teal accent.
+ * Pastels are used only where attention is needed (verdicts, quick-check chips).
+ * No gradients, no glow, no purple. Text colours are AA (4.5:1+) on paper and white;
+ * slate-300 is for control borders only (3:1+), never for text.
+ */
 @theme {
-  --color-brand: #0F766E;
-  --color-brand-dark: #115E59;
-  --color-danger: #B91C1C;
-  --color-danger-bg: #FEE2E2;
-  --color-caution: #B45309;
-  --color-caution-bg: #FEF3C7;
-  --color-safe: #166534;
-  --color-safe-bg: #DCFCE7;
+  --color-paper: #FAF8F4;
+  --color-slate-50: #FAF8F4;
+  --color-slate-100: #F2EEE7;
+  --color-slate-200: #E6E0D6;
+  --color-slate-300: #958D80;
+  --color-slate-400: #857E73;
+  --color-slate-500: #6B655C;
+  --color-slate-600: #58534B;
+  --color-slate-700: #46423C;
+  --color-slate-800: #36332E;
+  --color-slate-900: #2B2925;
+
+  --color-brand: #2F6B62;
+  --color-brand-dark: #24554E;
+  --color-brand-tint: #E6EFEC;
+
+  --color-danger: #8C3A30;
+  --color-danger-bg: #F7E4DF;
+  --color-caution: #7D4E16;
+  --color-caution-bg: #FAEBD5;
+  --color-safe: #2D5C3D;
+  --color-safe-bg: #E3EEE2;
+
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.875rem;
 }
 
 html { font-size: 15px; }
-body { @apply bg-white text-slate-900 font-sans antialiased; min-width: 320px; }
-:focus-visible { outline: 3px solid var(--color-brand); outline-offset: 2px; border-radius: 4px; }
+body { @apply bg-paper font-sans text-slate-900 antialiased; min-width: 320px; line-height: 1.55; }
+h1, h2 { letter-spacing: -0.005em; }
+.font-display { font-family: var(--font-serif); }
+:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; border-radius: 6px; }
+::selection { background: var(--color-brand-tint); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -22,6 +49,6 @@ body { @apply bg-white text-slate-900 font-sans antialiased; min-width: 320px; }
 
 .btn, .btn-primary, .btn-secondary { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50; }
 .btn-primary { @apply bg-brand text-white hover:bg-brand-dark; }
-.btn-secondary { @apply border border-slate-300 bg-white text-slate-800 hover:bg-slate-50; }
-.btn-link { @apply text-brand underline underline-offset-2 hover:text-brand-dark; }
+.btn-secondary { @apply border border-slate-300 bg-white text-slate-800 hover:bg-slate-100; }
+.btn-link { @apply text-brand underline decoration-1 underline-offset-[3px] hover:text-brand-dark; }
 .card { @apply rounded-xl border border-slate-200 bg-white p-4; }

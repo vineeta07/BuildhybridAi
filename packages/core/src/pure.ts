@@ -12,3 +12,4 @@ export * from './receipts';
 export * from './domain';
 export * from './samples';
 export * from './version';
+export * from './evaluate';

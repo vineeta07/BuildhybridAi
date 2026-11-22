@@ -73,6 +73,20 @@ function countLinkHostMismatches(): number {
   return n;
 }
 
+const ADD_ON = /(insurance|protection|warranty|donat|tip|subscribe|subscription|membership|newsletter|add[- ]?on|priority|express|auto[- ]?renew|premium|plan)/i;
+
+/** Checkboxes ticked by default (in the HTML, not by the user) whose label sells an extra. */
+function countPreTickedAddOns(): number {
+  let n = 0;
+  for (const el of Array.from(document.querySelectorAll('input[type=checkbox]')).slice(0, 500)) {
+    const box = el as HTMLInputElement;
+    if (!box.defaultChecked || !isVisible(box.closest('label') ?? box)) continue;
+    const label = (box.labels?.[0]?.textContent ?? box.closest('label')?.textContent ?? box.getAttribute('aria-label') ?? box.name ?? '').slice(0, 200);
+    if (ADD_ON.test(label)) n++;
+  }
+  return n;
+}
+
 function collectSignals(): PageSignals {
   const host = location.hostname;
   const has = (sel: string) => { try { return document.querySelector(sel) !== null; } catch { return false; } };
@@ -92,6 +106,7 @@ function collectSignals(): PageSignals {
       try { return regDomain(new URL(action, location.href).hostname) !== regDomain(host); } catch { return false; }
     }),
     linkHostMismatches: countLinkHostMismatches(),
+    preTickedAddOns: countPreTickedAddOns(),
   };
 }
 

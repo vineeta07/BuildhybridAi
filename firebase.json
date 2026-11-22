@@ -1,14 +1,34 @@
 {
   "hosting": {
     "public": "apps/site/public",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "headers": [
-      { "source": "**", "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "no-referrer" }
-      ] }
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          }
+        ]
+      }
+    ],
+    "predeploy": [
+      "pnpm --filter @satark/site build"
     ]
   },
-  "firestore": { "rules": "firestore.rules" },
-  "remoteconfig": { "template": "remoteconfig.template.json" }
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "remoteconfig": {
+    "template": "remoteconfig.template.json"
+  }
 }

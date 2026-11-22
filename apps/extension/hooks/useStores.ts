@@ -14,7 +14,11 @@ export function useSettings() {
     load();
     return onLocalChange(['settings'], load);
   }, []);
-  const update = useCallback(async (patch: Partial<UserSettings>) => setSettings(await saveSettings(patch)), []);
+  const update = useCallback(async (patch: Partial<UserSettings>) => {
+    const next = await saveSettings(patch);
+    setSettings(next);
+    return next;
+  }, []);
   return [settings, update] as const;
 }
 

@@ -1,11 +1,36 @@
-:root { --brand: #0F766E; --ink: #0f172a; --muted: #475569; --bg: #ffffff; --soft: #f1f5f9; }
+/* Same palette as the extension: warm paper, dark warm ink, one muted sage-teal accent. */
+:root {
+  --paper: #FAF8F4; --surface: #FFFFFF; --line: #E6E0D6; --control: #958D80;
+  --ink: #2B2925; --muted: #6B655C; --brand: #2F6B62; --brand-dark: #24554E; --brand-tint: #E6EFEC;
+  --danger: #8C3A30; --danger-bg: #F7E4DF; --caution: #7D4E16; --caution-bg: #FAEBD5; --neutral-bg: #F2EEE7;
+  --serif: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+}
 * { box-sizing: border-box; }
-body { margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink); background: var(--bg); }
-main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
-h1 { line-height: 1.2; }
-a { color: var(--brand); }
-.banner { background: #FEF3C7; color: #B45309; padding: 8px 16px; text-align: center; font-weight: 600; }
-.card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin: 16px 0; background: #fff; }
+body { margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink); background: var(--paper); -webkit-font-smoothing: antialiased; }
+main { max-width: 720px; margin: 0 auto; padding: 40px 16px 72px; }
+h1, h2 { font-family: var(--serif); font-weight: 600; line-height: 1.2; letter-spacing: -0.005em; }
+h1 { font-size: 2.4rem; margin: 0.2em 0 0.4em; }
+h2 { font-size: 1.35rem; margin: 1.6em 0 0.5em; }
+.lede { font-size: 1.125rem; color: #46423C; }
+.eyebrow { margin: 0; font-size: 0.9rem; }
+a { color: var(--brand); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--brand-dark); }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 6px; }
+.banner { background: var(--caution-bg); color: var(--caution); padding: 8px 16px; text-align: center; font-weight: 600; }
+.card { border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin: 20px 0; background: var(--surface); }
+.card h2:first-child { margin-top: 0; }
 .muted { color: var(--muted); }
-code { background: var(--soft); padding: 1px 4px; border-radius: 4px; }
-table { border-collapse: collapse; width: 100%; } th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+code { background: var(--neutral-bg); padding: 1px 5px; border-radius: 4px; font-size: 0.92em; }
+table { border-collapse: collapse; width: 100%; } th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+textarea { width: 100%; margin: 8px 0 12px; padding: 12px; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--control); border-radius: 10px; resize: vertical; }
+textarea::placeholder { color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn-primary { font: inherit; font-weight: 500; padding: 8px 16px; border: 0; border-radius: 10px; background: var(--brand); color: #fff; cursor: pointer; }
+.btn-primary:hover { background: var(--brand-dark); }
+.btn-link { font: inherit; background: none; border: 0; padding: 0; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.chip { border-radius: 10px; padding: 12px 14px; }
+.chip ul { margin: 6px 0 0; padding-left: 20px; }
+.chip-red { background: var(--danger-bg); color: var(--danger); }
+.chip-amber { background: var(--caution-bg); color: var(--caution); }
+.chip-neutral { background: var(--neutral-bg); color: #46423C; }
+.payload { white-space: pre-wrap; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; font-size: 0.9rem; }

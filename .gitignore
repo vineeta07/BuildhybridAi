@@ -9,3 +9,4 @@ coverage/
 *.crx
 .DS_Store
 .firebase/
+apps/site/public/playground.js

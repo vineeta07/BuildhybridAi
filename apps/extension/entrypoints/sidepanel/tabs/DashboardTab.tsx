@@ -28,7 +28,7 @@ export function DashboardTab() {
         <button type="button" className="btn-secondary" onClick={exportJson} disabled={!receipts.length}>Export JSON</button>
         <button type="button" className="btn-secondary" onClick={() => { if (confirm('Clear all receipts and counters?')) void clearReceipts(); }} disabled={!receipts.length && !counters.checks}>Clear all</button>
       </div>
-      <h2 className="font-semibold">Last {receipts.length} receipts</h2>
+      <h2 className="font-display font-semibold text-lg">Last {receipts.length} receipts</h2>
       {receipts.length === 0 ? (
         <p className="text-sm text-slate-600">No checks yet. Receipts hold only metadata: where a check ran, why, and how much left the device. Never the text.</p>
       ) : (
@@ -52,7 +52,7 @@ export function DashboardTab() {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="card p-3 text-center">
-      <div className="text-xl font-semibold text-brand">{value}</div>
+      <div className="font-display font-semibold text-2xl text-slate-900">{value}</div>
       <div className="text-xs text-slate-600">{label}</div>
     </div>
   );

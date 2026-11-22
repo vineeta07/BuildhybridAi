@@ -34,7 +34,7 @@ export function PasteTab(props: {
       <label htmlFor="paste" className="block font-medium">Paste a message, email or agreement</label>
       <textarea
         id="paste" value={text} onChange={(e) => setText(e.target.value)} rows={8} maxLength={40_000}
-        className="w-full rounded-lg border border-slate-300 p-2 text-[15px] focus:border-brand"
+        className="w-full rounded-lg border border-slate-300 bg-white p-3 text-[15px] placeholder:text-slate-500 focus:border-brand"
         placeholder="For example, an SMS that says your account will be blocked"
       />
       <div className="flex flex-wrap items-center gap-3">

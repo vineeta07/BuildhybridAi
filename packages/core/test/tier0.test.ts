@@ -60,3 +60,11 @@ describe('tier0', () => {
     expect(performance.now() - t).toBeLessThan(50);
   });
 });
+
+describe('dark patterns', () => {
+  it('flags pre-ticked paid add-ons', () => {
+    const f = run('https://shop.example', { preTickedAddOns: 1 }).findings.find((x) => x.id === 'preticked');
+    expect(f?.points).toBe(15);
+    expect(run('https://shop.example', { preTickedAddOns: 5 }).findings.find((x) => x.id === 'preticked')?.points).toBe(30);
+  });
+});

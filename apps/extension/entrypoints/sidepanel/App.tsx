@@ -77,14 +77,14 @@ export default function App() {
   const version = chrome.runtime.getManifest().version;
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white px-4 py-3">
+      <header className="sticky top-0 z-10 border-b border-slate-200 bg-paper px-4 py-3">
         <div className="flex items-center gap-2">
           <Shield className="text-brand" width={22} height={22} />
-          <h1 className="text-lg font-semibold">Satark</h1>
-          <button type="button" className="ml-1 rounded-full bg-brand/10 px-2.5 py-0.5 text-sm font-medium text-brand" onClick={() => void chrome.runtime.openOptionsPage()} title="Change mode in Options">
+          <h1 className="font-display font-semibold text-xl">Satark</h1>
+          <button type="button" className="ml-1 rounded-full bg-brand-tint px-2.5 py-0.5 text-sm font-medium text-brand hover:bg-brand/15" onClick={() => void chrome.runtime.openOptionsPage()} title="Change mode in Options">
             <span className="sr-only">Mode: </span>{MODE_LABEL[settings.mode]}
           </button>
-          <button type="button" className="ml-auto rounded p-1 text-slate-500 hover:text-slate-800" aria-label="Open options" onClick={() => void chrome.runtime.openOptionsPage()}>
+          <button type="button" className="ml-auto rounded p-1 text-slate-600 hover:bg-slate-100 hover:text-slate-900" aria-label="Open options" onClick={() => void chrome.runtime.openOptionsPage()}>
             <Gear />
           </button>
         </div>
@@ -103,10 +103,10 @@ export default function App() {
         </div>
       )}
 
-      <nav className="flex border-b border-slate-200 px-2" role="tablist" aria-label="Satark sections">
+      <nav className="mx-4 mt-3 flex gap-1 rounded-lg bg-slate-100 p-1" role="tablist" aria-label="Satark sections">
         {([['check', 'Check page'], ['paste', 'Paste text'], ['dashboard', 'Dashboard']] as const).map(([id, label]) => (
           <button key={id} role="tab" type="button" id={`tab-${id}`} aria-selected={tab === id} aria-controls={`panel-${id}`}
-            className={`flex-1 border-b-2 px-2 py-2 text-sm font-medium ${tab === id ? 'border-brand text-brand' : 'border-transparent text-slate-600 hover:text-slate-900'}`}
+            className={`flex-1 rounded-md px-2 py-1.5 text-sm font-medium transition-colors ${tab === id ? 'bg-white text-slate-900 shadow-[0_1px_2px_rgba(43,41,37,0.08)]' : 'text-slate-600 hover:text-slate-900'}`}
             onClick={() => setTab(id)}
             onKeyDown={(e) => {
               const order: Tab[] = ['check', 'paste', 'dashboard'];
@@ -130,7 +130,7 @@ export default function App() {
           {tab === 'dashboard' && <DashboardTab />}
         </div>
       </main>
-      <footer className="px-4 pb-3 text-xs text-slate-400">Satark {version}</footer>
+      <footer className="px-4 pb-3 text-xs text-slate-500">Satark {version}</footer>
 
       {consent && (
         <ConsentSheet req={consent.req} onAnswer={(ok, remember) => {

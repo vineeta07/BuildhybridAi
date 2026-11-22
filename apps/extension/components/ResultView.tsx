@@ -6,9 +6,9 @@ import { firebaseConfigured } from '@/lib/firebase';
 import { Tier0Chip } from './Tier0Chip';
 
 const VERDICT: Record<VerdictLevel, { words: string; cls: string; Icon: typeof Alert }> = {
-  danger: { words: 'Looks risky', cls: 'bg-danger-bg text-danger border-danger/30', Icon: Octagon },
-  caution: { words: 'Be careful', cls: 'bg-caution-bg text-caution border-caution/30', Icon: Alert },
-  safe: { words: 'No red flags found', cls: 'bg-safe-bg text-safe border-safe/30', Icon: ShieldCheck },
+  danger: { words: 'Looks risky', cls: 'bg-danger-bg text-danger', Icon: Octagon },
+  caution: { words: 'Be careful', cls: 'bg-caution-bg text-caution', Icon: Alert },
+  safe: { words: 'No red flags found', cls: 'bg-safe-bg text-safe', Icon: ShieldCheck },
 };
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -50,7 +50,7 @@ export function ResultView(props: {
       : REASON_SENTENCE[r.decision.reason];
     return (
       <section aria-labelledby="result-h" className="space-y-3">
-        <h2 id="result-h" ref={heading} tabIndex={-1} className="text-lg font-semibold">Limited check (no AI)</h2>
+        <h2 id="result-h" ref={heading} tabIndex={-1} className="font-display font-semibold text-xl">Limited check (no AI)</h2>
         <p className="text-sm text-slate-700">{why}</p>
         <Tier0Chip r={result.tier0} expanded />
         <div className="flex flex-wrap gap-2">
@@ -69,10 +69,10 @@ export function ResultView(props: {
   const quotes = a.reasons.map((x) => x.quote);
   return (
     <section aria-labelledby="result-h" className="space-y-3">
-      <div className={`flex items-start gap-3 rounded-xl border p-4 ${v.cls}`}>
-        <v.Icon width={28} height={28} className="mt-0.5 shrink-0" />
+      <div className={`flex items-start gap-3 rounded-xl p-4 ${v.cls}`}>
+        <v.Icon width={26} height={26} className="mt-1 shrink-0" />
         <div>
-          <h2 id="result-h" ref={heading} tabIndex={-1} className="text-lg font-semibold">{v.words}</h2>
+          <h2 id="result-h" ref={heading} tabIndex={-1} className="font-display font-semibold text-xl">{v.words}</h2>
           <p className="font-medium text-slate-900">{a.headline}</p>
         </div>
       </div>
@@ -106,11 +106,11 @@ function ReasonRow({ r, onShow }: { r: Reason; onShow?: (() => void) | undefined
   return (
     <li className="card space-y-2 p-3">
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <span className="rounded-full bg-slate-100 px-2 py-0.5 font-medium text-slate-700">{CATEGORY_LABEL[r.category] ?? r.category}</span>
+        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-700">{CATEGORY_LABEL[r.category] ?? r.category}</span>
         <span className={`font-medium ${sev}`}>{r.severity} severity</span>
       </div>
       <p className="text-slate-800">{r.explanation}</p>
-      <blockquote className="border-l-4 border-brand/40 pl-3 text-sm italic text-slate-700">“{r.quote}”</blockquote>
+      <blockquote className="border-l-2 border-slate-300 pl-3 font-display text-[15px] text-slate-800">“{r.quote}”</blockquote>
       {onShow && <button type="button" className="btn-link text-sm" onClick={onShow}>Show on page</button>}
     </li>
   );
